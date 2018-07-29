@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+    <head>
+        <meta charset="utf-8">
+        <title>Flask Test</title>
+    </head>
+    <body>
+        {% if name %}
+            <h1>Hello, {{name}}</h1>
+        {% else %}
+            <h1>Hello noname</h1>
+        {% endif %}
+
+    <button id="getDatas" type="button" name="button">
+        Click
+    </button>
+
+    <p>alice age : <span class="show"></span></p>
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function(){
+            $('#getDatas').click(function(){
+                $.getJSON("/people", function(data){
+                    console.log(data);
+                    console.log(data.alice);
+                    $(".show").text(data.alice);
+                })
+            });
+        })
+    </script>
+    </body>
+</html>
