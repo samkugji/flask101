@@ -24,7 +24,7 @@ pyenv install 3.6.5
 pyenv versions
 
 # virtualenv
-sudo apt-get -y nstall pyenv-virtualenv
+sudo apt-get -y install pyenv-virtualenv
 sudo apt-get -y install python-virtualenv
 pyenv virtualenv 3.6.5 python3
 # pyenv virtualenv 2.7.15 python2
@@ -34,7 +34,7 @@ pyenv global python3
 git clone git://github.com/kennethreitz/autoenv.git ~/.autoenv
 echo 'source ~/.autoenv/activate.sh' >> ~/.bash_profile
 source .bash_profile
-# mkdir python2
-mkdir python3
+# mkdir ~/python2
+mkdir ~/python3
 # echo 'pyenv activate python2' >> ~/python2/.env
 echo 'pyenv activate python3' >> ~/python3/.env
