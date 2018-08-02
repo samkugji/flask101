@@ -20,4 +20,11 @@ def people():
     }
     return jsonify(people)
 
+@app.route("/pro48_api/<idol_name>")
+def pro48_api(idol_name):
+
+    result = idol_name + " 파이팅!"
+
+    return result
+
 app.run()
