@@ -31,14 +31,11 @@ def pro48_api(idol_name="다 같이"):
 
     return result
 
-@app.route("/pro48_vote_api/")
-@app.route("/pro48_vote_api/<path:idol_name>", methods=['GET','POST'])
+@app.route("/pro48_vote_api/", methods=['GET','POST'])
 def pro48_vote_api(idol_name="모두"):
     if request.method == 'POST':
         data = request.get_json()
-        print(type(data))
-
-        result = idol_name + " 에게 " + str(data['vote_cnt']) + " 투표 완료"
+        result = str(data['name']) + " 에게 " + str(data['vote_cnt']) + " 투표 완료"
 
     else:
         result = idol_name + "에게 기본 1표가 투표되었습니다."
