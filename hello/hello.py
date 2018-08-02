@@ -1,22 +1,35 @@
+import os
+import requests
+
+
 from flask import *
 
+BASE_DIR = "./"
+# 장고 BASE_DIR보다 상위의 프로젝트 컨테이너 폴더를 ROOT_DIR로 지정
+ROOT_DIR = os.path.dirname(BASE_DIR)
+SECRETS_PATH = os.path.join(ROOT_DIR, 'secrets/secrets.json')
+YOUTUBE_SECRET_KEY = json.loads(open(SECRETS_PATH).read())["YOUTUBE_SECRET_KEY"]
+
 app = Flask(__name__)
+
 
 @app.route("/")
 def hello():
     return "Hello Flask"
+
 
 # html webpage
 @app.route("/user/<username>")
 def user(username):
     return render_template("profile.html", name=username)
 
+
 # json format api
 @app.route("/people")
 def people():
     people = {
-        "alice":25,
-        "jin":[{"age":35},{"email":"pdj@daum.net"}]
+        "alice": 25,
+        "jin": [{"age": 35}, {"email": "pdj@daum.net"}]
     }
     return jsonify(people)
 
@@ -31,7 +44,8 @@ def pro48_api(idol_name="다 같이"):
 
     return result
 
-@app.route("/pro48_vote_api/", methods=['GET','POST'])
+
+@app.route("/pro48_vote_api/", methods=['GET', 'POST'])
 def pro48_vote_api(idol_name="모두"):
     if request.method == 'POST':
         data = request.get_json()
@@ -41,6 +55,21 @@ def pro48_vote_api(idol_name="모두"):
         result = idol_name + "에게 기본 1표가 투표되었습니다."
 
     return result
+
+
+@app.route("/pro48_youtube_api/<query>")
+def pro48_youtube_api(query):
+
+    # 수정할것 있음
+    youtube_base_url = "https://www.googleapis.com/youtube/v3/search?part=snippet&&key="+YOUTUBE_SECRET_KEY+"&q="
+    youtube_api_url = youtube_base_url + query
+
+    result = requests.get(youtube_api_url).json()
+    youtube_video_id = result["items"][0]["id"]["videoId"]
+    print(youtube_video_id)
+
+    return "https://www.youtube.com/watch?v="+youtube_video_id
+
 
 # slack outgoing webhook
 # @app.route("/slack", methods=['POST'])
@@ -58,6 +87,3 @@ def pro48_vote_api(idol_name="모두"):
 
 if __name__ == '__main__':
     app.run()
-
-
-
