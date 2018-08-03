@@ -1,6 +1,7 @@
 import os
 import requests
-
+import urllib.parse
+import re
 
 from flask import *
 
@@ -49,10 +50,24 @@ def pro48_api(idol_name="다 같이"):
 def pro48_vote_api(idol_name="모두"):
     if request.method == 'POST':
         data = request.get_json()
+
         result = str(data['name']) + " 에게 " + str(data['vote_cnt']) + " 투표 완료"
 
     else:
         result = idol_name + "에게 기본 1표가 투표되었습니다."
+
+    return result
+
+@app.route("/pro48_vote_task_api/", methods=['POST'])
+def pro48_vote_task_api():
+    header = request.headers
+    entities_str = urllib.parse.unquote(header["X-Kaa-Userentity"])
+
+    # 값만 파싱
+    entities_str = entities_str[2:].split("&")
+    entities_val = [x.split("=")[::-2][0] for x in entities_str]
+
+    result = entities_val[0] + " 에게 " + entities_val[1] + " 투표 완료"
 
     return result
 
@@ -66,7 +81,6 @@ def pro48_youtube_api(query):
 
     result = requests.get(youtube_api_url).json()
     youtube_video_id = result["items"][0]["id"]["videoId"]
-    print(youtube_video_id)
 
     return "https://www.youtube.com/watch?v="+youtube_video_id
 
