@@ -4,9 +4,9 @@ import requests
 
 from flask import *
 
-BASE_DIR = "./"
-# 장고 BASE_DIR보다 상위의 프로젝트 컨테이너 폴더를 ROOT_DIR로 지정
+BASE_DIR = os.path.abspath(os.path.dirname(__file__))
 ROOT_DIR = os.path.dirname(BASE_DIR)
+
 SECRETS_PATH = os.path.join(ROOT_DIR, 'secrets/secrets.json')
 YOUTUBE_SECRET_KEY = json.loads(open(SECRETS_PATH).read())["YOUTUBE_SECRET_KEY"]
 
